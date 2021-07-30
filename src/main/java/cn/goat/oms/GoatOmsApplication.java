@@ -1,13 +1,13 @@
-package cn.stephen.study.demoproject;
+package cn.goat.oms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoprojectApplication {
+public class GoatOmsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoprojectApplication.class, args);
+		SpringApplication.run(GoatOmsApplication.class, args);
 	}
 
 }

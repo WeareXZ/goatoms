@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.goat.oms.mapper.ShoesOrderMapper">
+
+    <resultMap id="BaseResultMap" type="cn.goat.oms.entity.ShoesOrder">
+            <id property="oderId" column="oder_id" jdbcType="BIGINT"/>
+            <result property="oderNumber" column="oder_number" jdbcType="BIGINT"/>
+            <result property="shoeCode" column="shoe_code" jdbcType="VARCHAR"/>
+            <result property="shoeSize" column="shoe_size" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="profit" column="profit" jdbcType="DECIMAL"/>
+            <result property="orderStatus" column="order_status" jdbcType="TINYINT"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="createdBy" column="created_by" jdbcType="VARCHAR"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedBy" column="updated_by" jdbcType="VARCHAR"/>
+            <result property="delFlag" column="del_flag" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        oder_id,oder_number,shoe_code,
+        shoe_size,price,profit,
+        order_status,remark,created_time,
+        created_by,updated_time,updated_by,
+        del_flag
+    </sql>
+</mapper>
