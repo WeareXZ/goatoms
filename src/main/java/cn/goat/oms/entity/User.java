@@ -1,12 +1,15 @@
 package cn.goat.oms.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 
@@ -24,27 +27,33 @@ public class User implements Serializable {
     /**
      * 用户名
      */
+    @NotNull(message = "用户名不能为空")
     private String userName;
 
     /**
      * 密码
      */
+    @NotNull(message = "密码不能为空")
     private String password;
 
     /**
      * 昵称
      */
+    @NotNull(message = "昵称不能为空")
     private String nickName;
 
     /**
      * 手机号
      */
+    @NotNull(message = "手机号不能为空")
     private String phone;
 
     /**
      * 创建时间
      */
-    private Date createdTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    private LocalDateTime createdTime;
 
     /**
      * 创建人
@@ -54,7 +63,9 @@ public class User implements Serializable {
     /**
      * 最后修改时间
      */
-    private Date updatedTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    private LocalDateTime updatedTime;
 
     /**
      * 最后修改人
@@ -64,7 +75,8 @@ public class User implements Serializable {
     /**
      * 逻辑删除字段 1代表删除
      */
-    private Byte delFlag;
+    @TableLogic
+    private Integer delFlag;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

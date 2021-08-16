@@ -1,13 +1,16 @@
 package cn.goat.oms.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 
@@ -30,11 +33,13 @@ public class ShoesOrder implements Serializable {
     /**
      * 鞋型号编码
      */
+    @NotNull(message = "鞋型号不能为空")
     private String shoeCode;
 
     /**
      * 鞋尺码
      */
+    @NotNull(message = "鞋尺码不能为空")
     private String shoeSize;
 
     /**
@@ -50,7 +55,7 @@ public class ShoesOrder implements Serializable {
     /**
      * 订单状态 0入库 1出库
      */
-    private Byte orderStatus;
+    private Integer orderStatus;
 
     /**
      * 备注
@@ -60,7 +65,9 @@ public class ShoesOrder implements Serializable {
     /**
      * 入库时间
      */
-    private Date createdTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    private LocalDateTime createdTime;
 
     /**
      * 创建人
@@ -70,7 +77,9 @@ public class ShoesOrder implements Serializable {
     /**
      * 出库时间
      */
-    private Date updatedTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    private LocalDateTime updatedTime;
 
     /**
      * 最后修改人
@@ -80,7 +89,8 @@ public class ShoesOrder implements Serializable {
     /**
      * 逻辑删除字段 1代表删除
      */
-    private Byte delFlag;
+    @TableLogic
+    private Integer delFlag;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

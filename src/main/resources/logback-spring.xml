@@ -2,9 +2,9 @@
 
 <configuration>
     <!--定义日志文件的存储地址,使用绝对路径-->
-    <property name="LOG_HOME" value="d:/logs"/>
+    <property name="LOG_HOME" value="c:/logs"/>
 
-    <!-- Console 输出设置 -->
+    <!-- Console 输出设置 -->c
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->

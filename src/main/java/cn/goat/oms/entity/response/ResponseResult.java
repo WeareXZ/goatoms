@@ -1,8 +1,12 @@
 package cn.goat.oms.entity.response;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@ToString
+@NoArgsConstructor
 public class ResponseResult<T> implements Response {
 
     private int code = SUCCESS_CODE;

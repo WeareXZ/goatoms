@@ -2,6 +2,6 @@ package cn.goat.oms.config;
 
 public class Constant {
 
-    public static final String AES = "goat-oms";
+    public static final String AES = "AES";
 
 }
