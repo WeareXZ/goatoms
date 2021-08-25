@@ -23,12 +23,12 @@ public class ShoesOrder implements Serializable {
      * 
      */
     @TableId
-    private Long oderId;
+    private Long orderId;
 
     /**
      * 订单号 时间戳+4位随机数
      */
-    private Long oderNumber;
+    private String orderNumber;
 
     /**
      * 鞋型号编码

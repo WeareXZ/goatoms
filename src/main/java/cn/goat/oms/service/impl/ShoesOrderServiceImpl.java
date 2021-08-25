@@ -1,7 +1,9 @@
 package cn.goat.oms.service.impl;
 
 import cn.goat.oms.entity.dto.ShoesOrderDTO;
+import cn.goat.oms.entity.request.ShoesOrderRequest;
 import cn.goat.oms.entity.response.ResponseResult;
+import cn.goat.oms.uitls.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,19 +29,22 @@ public class ShoesOrderServiceImpl extends ServiceImpl<ShoesOrderMapper, ShoesOr
     private ShoesOrderMapper shoesOrderMapper;
 
     @Override
-    public IPage<ShoesOrder> findAll(ShoesOrderDTO shoesOrderDTO, Page<ShoesOrder> request) {
+    public IPage<ShoesOrder> findAll(ShoesOrderRequest shoesOrderRequest, Page<ShoesOrder> request) {
         QueryWrapper queryWrapper = new QueryWrapper();
-        if(StringUtils.isNotBlank(shoesOrderDTO.getShoeCode())){
-            queryWrapper.eq("shoe_code",shoesOrderDTO.getShoeCode());
+        if(StringUtils.isNotBlank(shoesOrderRequest.getShoeCode())){
+            queryWrapper.eq("shoe_code",shoesOrderRequest.getShoeCode());
         }
-        if(StringUtils.isNotBlank(shoesOrderDTO.getShoeSize())){
-            queryWrapper.eq("shoe_size",shoesOrderDTO.getShoeSize());
+        if(StringUtils.isNotBlank(shoesOrderRequest.getShoeSize())){
+            queryWrapper.eq("shoe_size",shoesOrderRequest.getShoeSize());
         }
-        if(Optional.ofNullable(shoesOrderDTO.getOrderStatus()).isPresent()){
-            queryWrapper.eq("order_status",shoesOrderDTO.getOrderStatus());
+        if(Optional.ofNullable(shoesOrderRequest.getOrderStatus()).isPresent()){
+            queryWrapper.eq("order_status",shoesOrderRequest.getOrderStatus());
         }
-        if(Optional.ofNullable(shoesOrderDTO.getCreatedTime()).isPresent()){
-            queryWrapper.ge("created_time",shoesOrderDTO.getCreatedTime());
+        if(StringUtils.isNotBlank(shoesOrderRequest.getStartTime())){
+            queryWrapper.ge("created_time",shoesOrderRequest.getStartTime());
+        }
+        if(StringUtils.isNotBlank(shoesOrderRequest.getEndTime())){
+            queryWrapper.le("created_time",shoesOrderRequest.getEndTime());
         }
         IPage<ShoesOrder> page = shoesOrderMapper.selectPage(request, queryWrapper);
         return page;
@@ -49,6 +54,8 @@ public class ShoesOrderServiceImpl extends ServiceImpl<ShoesOrderMapper, ShoesOr
     public ResponseResult saveOrder(ShoesOrderDTO shoesOrderDTO) {
         ShoesOrder shoesOrder = new ShoesOrder();
         BeanUtils.copyProperties(shoesOrderDTO,shoesOrder);
+        String orderNum = RandomUtil.getOrderNum();
+        shoesOrder.setOrderNumber(orderNum);
         int insert = shoesOrderMapper.insert(shoesOrder);
         if(insert>0){
             return ResponseResult.SUCCESS();
@@ -57,14 +64,20 @@ public class ShoesOrderServiceImpl extends ServiceImpl<ShoesOrderMapper, ShoesOr
     }
 
     @Override
-    public ResponseResult inStorage(ShoesOrderDTO shoesOrderDTO) {
-        Long oderId = shoesOrderDTO.getOderId();
+    public ResponseResult inStorage(ShoesOrderRequest shoesOrderRequest) {
+        Long oderId = shoesOrderRequest.getOderId();
         ShoesOrder old = shoesOrderMapper.selectById(oderId);
-        old.setProfit(shoesOrderDTO.getProfit());
+        old.setProfit(shoesOrderRequest.getProfit());
         old.setUpdatedTime(LocalDateTime.now());
         old.setOrderStatus(1);
         shoesOrderMapper.updateById(old);
         return ResponseResult.SUCCESS(old);
+    }
+
+    @Override
+    public ShoesOrder findOne(String id) {
+        ShoesOrder shoesOrder = shoesOrderMapper.selectById(id);
+        return shoesOrder;
     }
 }
 
