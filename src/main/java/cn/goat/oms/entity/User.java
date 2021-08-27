@@ -21,7 +21,7 @@ public class User implements Serializable {
     /**
      * 
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long userId;
 
     /**
@@ -35,12 +35,6 @@ public class User implements Serializable {
      */
     @NotNull(message = "密码不能为空")
     private String password;
-
-    /**
-     * 昵称
-     */
-    @NotNull(message = "昵称不能为空")
-    private String nickName;
 
     /**
      * 手机号

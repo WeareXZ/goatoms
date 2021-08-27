@@ -19,5 +19,9 @@ public interface ShoesOrderService extends IService<ShoesOrder> {
 
     ResponseResult inStorage(ShoesOrderRequest shoesOrderRequest);
 
-    ShoesOrder findOne(String id);
+    ShoesOrder findOne(Long id);
+
+    ResponseResult edit(Long id, ShoesOrderDTO shoesOrderDTO);
+
+    ShoesOrder findOneByStatus(Long id);
 }

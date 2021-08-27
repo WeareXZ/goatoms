@@ -35,11 +35,14 @@ public class GoatOmsController {
     }
 
     @GetMapping("/findOne")
-    public ResponseResult<ShoesOrder> findOne(String id){
-        if(StringUtils.isNotBlank(id)){
-           throw new CustomException("id不能为空");
-        }
+    public ResponseResult<ShoesOrder> findOne(Long id){
         ShoesOrder all = shoesOrderService.findOne(id);
+        return ResponseResult.SUCCESS(all);
+    }
+
+    @GetMapping("/findOneByStatus")
+    public ResponseResult<ShoesOrder> findOneByStatus(Long id){
+        ShoesOrder all = shoesOrderService.findOneByStatus(id);
         return ResponseResult.SUCCESS(all);
     }
 
@@ -48,8 +51,14 @@ public class GoatOmsController {
         return shoesOrderService.saveOrder(shoesOrderDTO);
     }
 
-    @PutMapping("/inStorage")
-    public ResponseResult inStorage(@RequestBody ShoesOrderRequest shoesOrderRequest){
+    @PutMapping("/inStorage/{id}")
+    public ResponseResult inStorage(@PathVariable("id") Long id,@RequestBody ShoesOrderRequest shoesOrderRequest){
+        shoesOrderRequest.setOderId(id);
         return shoesOrderService.inStorage(shoesOrderRequest);
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseResult edit(@PathVariable("id") Long id,@RequestBody ShoesOrderDTO shoesOrderDTO){
+        return shoesOrderService.edit(id,shoesOrderDTO);
     }
 }

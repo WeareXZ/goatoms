@@ -1,10 +1,11 @@
 package cn.goat.oms.service.impl;
 
+import cn.goat.oms.config.Constant;
 import cn.goat.oms.entity.dto.UserDTO;
 import cn.goat.oms.entity.response.CommonCode;
 import cn.goat.oms.entity.response.CustomException;
 import cn.goat.oms.entity.response.ResponseResult;
-import cn.goat.oms.uitls.AESUtil;
+import cn.goat.oms.uitls.EncryptUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.goat.oms.entity.User;
@@ -14,8 +15,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
-import java.util.Optional;
+import javax.servlet.http.HttpSession;
+
 
 /**
  *
@@ -35,9 +36,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new CustomException("该手机号用户已经存在");
         }
         User u = new User();
-        BeanUtils.copyProperties(u,userDTO);
+        BeanUtils.copyProperties(userDTO,u);
         String password = u.getPassword();
-        String encodingPsw = AESUtil.encodingPsw(password);
+        String encodingPsw = EncryptUtil.AESencode(password, Constant.AES);
         u.setPassword(encodingPsw);
         userMapper.insert(u);
         return ResponseResult.SUCCESS();
@@ -47,10 +48,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public ResponseResult login(UserDTO userDTO) {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("phone",userDTO.getPhone());
-        String encodingPsw = AESUtil.encodingPsw(userDTO.getPassword());
-        queryWrapper.eq("password",encodingPsw);
         User user = userMapper.selectOne(queryWrapper);
-        if(!Optional.ofNullable(user).isPresent()){
+        String password = EncryptUtil.AESdecode(user.getPassword(),Constant.AES);
+        if(!password.equals(userDTO.getPassword())){
             throw new CustomException("用户账户或密码错误!");
         }
         return new ResponseResult(CommonCode.USER_LOGIN_SUCCESS,user);
@@ -65,7 +65,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new CustomException("该用户不存在!");
         }
         String password = user.getPassword();
-        password = AESUtil.decodingPsw(password);
+        password = EncryptUtil.AESdecode(password,Constant.AES);
         return ResponseResult.SUCCESS(password);
     }
 }

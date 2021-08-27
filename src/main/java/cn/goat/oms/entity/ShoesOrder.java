@@ -13,16 +13,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotNull;
 
 /**
- * 
  * @TableName shoes_order
  */
-@TableName(value ="shoes_order")
+@TableName(value = "shoes_order")
 @Data
 public class ShoesOrder implements Serializable {
     /**
-     * 
+     *
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long orderId;
 
     /**
@@ -66,7 +65,7 @@ public class ShoesOrder implements Serializable {
      * 入库时间
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createdTime;
 
     /**
@@ -78,7 +77,7 @@ public class ShoesOrder implements Serializable {
      * 出库时间
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8",shape = JsonFormat.Shape.STRING)
     private LocalDateTime updatedTime;
 
     /**
