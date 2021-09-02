@@ -98,14 +98,17 @@ public class EncryptUtil {
     private static String keyGeneratorES(String res, String algorithm, String key, int keysize, boolean isEncode){
         try {
             KeyGenerator kg = KeyGenerator.getInstance(algorithm);
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
             if (keysize == 0) {
                 byte[] keyBytes = charset==null?key.getBytes():key.getBytes(charset);
-                kg.init(new SecureRandom(keyBytes));
+                random.setSeed(keyBytes);
+                kg.init(random);
             }else if (key==null) {
                 kg.init(keysize);
             }else {
                 byte[] keyBytes = charset==null?key.getBytes():key.getBytes(charset);
-                kg.init(keysize, new SecureRandom(keyBytes));
+                random.setSeed(keyBytes);
+                kg.init(random);
             }
             SecretKey sk = kg.generateKey();
             SecretKeySpec sks = new SecretKeySpec(sk.getEncoded(), algorithm);
