@@ -7,6 +7,7 @@ import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.goat.oms.annotation.ResubmitAnnotation;
 import cn.goat.oms.entity.ShoesOrder;
 import cn.goat.oms.entity.dto.ShoesOrderDTO;
+import cn.goat.oms.entity.poi.ShoesOrderImp;
 import cn.goat.oms.entity.poi.ShoesOrderPoi;
 import cn.goat.oms.entity.request.ShoesOrderRequest;
 import cn.goat.oms.entity.response.ResponseResult;
@@ -97,5 +98,11 @@ public class GoatOmsController {
         Workbook sheets = ExcelExportUtil.exportExcel(exportParams, ShoesOrderPoi.class,shoesOrderPoiResponseResult.getData() );
         ExcelDownUtil.downLoadExcel("order.xls",response,sheets);
         return null;
+    }
+
+    @PostMapping("/orderImport")
+    @ResubmitAnnotation
+    public ResponseResult orderImport(@RequestBody List<ShoesOrderImp> orders){
+        return shoesOrderService.orderImport(orders);
     }
 }

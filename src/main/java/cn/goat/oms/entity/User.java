@@ -12,14 +12,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotNull;
 
 /**
- * 
+ *
  * @TableName user
  */
 @TableName(value ="user")
 @Data
 public class User implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(type = IdType.AUTO)
     private Long userId;
@@ -65,6 +65,11 @@ public class User implements Serializable {
      * 最后修改人
      */
     private String updatedBy;
+
+    /**
+     * 是否可用 1代表可用
+     */
+    private Integer ableFlag;
 
     /**
      * 逻辑删除字段 1代表删除

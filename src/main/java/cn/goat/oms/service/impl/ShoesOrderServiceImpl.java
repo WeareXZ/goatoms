@@ -2,6 +2,7 @@ package cn.goat.oms.service.impl;
 
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.goat.oms.entity.dto.ShoesOrderDTO;
+import cn.goat.oms.entity.poi.ShoesOrderImp;
 import cn.goat.oms.entity.poi.ShoesOrderPoi;
 import cn.goat.oms.entity.request.ShoesOrderRequest;
 import cn.goat.oms.entity.response.CustomException;
@@ -28,7 +29,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -171,6 +175,51 @@ public class ShoesOrderServiceImpl extends ServiceImpl<ShoesOrderMapper, ShoesOr
             shoesOrderPois.add(poi);
         });
         return ResponseResult.SUCCESS(shoesOrderPois);
+    }
+
+    @Override
+    public ResponseResult orderImport(List<ShoesOrderImp> orders) {
+        if(!CollectionUtils.isEmpty(orders)){
+            orders.stream().forEach(order -> {
+                ShoesOrder shoesOrder = new ShoesOrder();
+                String orderNum = RandomUtil.getOrderNum();
+                shoesOrder.setOrderNumber(orderNum);
+                BeanUtils.copyProperties(order,shoesOrder);
+                if(StringUtils.isNotBlank(order.getCreatedTime())){
+                    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    //进行转换
+                    LocalDate date = LocalDate.parse(order.getCreatedTime(), fmt);
+                    LocalTime now = LocalTime.now();
+                    LocalDateTime localDateTime = date.atTime(now);
+                    shoesOrder.setCreatedTime(localDateTime);
+                }
+                if(StringUtils.isNotBlank(order.getOrderStatus())){
+                    if (order.getOrderStatus().equals("入库")) {
+                        shoesOrder.setOrderStatus(OrderStatusCode.IN_STORE.code());
+                    } else if(order.getOrderStatus().equals("出库")){
+                        shoesOrder.setOrderStatus(OrderStatusCode.OUT_STORE.code());
+                    }
+                }
+                if(StringUtils.isNotBlank(order.getPrice())){
+                    BigDecimal bigDecimal = new BigDecimal(order.getPrice());
+                    shoesOrder.setPrice(bigDecimal);
+                }
+                if(StringUtils.isNotBlank(order.getProfit())){
+                    BigDecimal bigDecimal = new BigDecimal(order.getProfit());
+                    shoesOrder.setProfit(bigDecimal);
+                }
+                if(StringUtils.isNotBlank(order.getUpdatedTime())){
+                    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    //进行转换
+                    LocalDate date = LocalDate.parse(order.getUpdatedTime(), fmt);
+                    LocalTime now = LocalTime.now();
+                    LocalDateTime localDateTime = date.atTime(now);
+                    shoesOrder.setUpdatedTime(localDateTime);
+                }
+                shoesOrderMapper.insert(shoesOrder);
+            });
+        }
+        return ResponseResult.SUCCESS();
     }
 }
 

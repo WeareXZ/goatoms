@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 
 /**
@@ -49,9 +50,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("phone",userDTO.getPhone());
         User user = userMapper.selectOne(queryWrapper);
+        if(!Optional.ofNullable(user).isPresent()){
+            throw new CustomException("用户不存在!");
+        }
         String password = EncryptUtil.AESdecode(user.getPassword(),Constant.AES);
         if(!password.equals(userDTO.getPassword())){
             throw new CustomException("用户账户或密码错误!");
+        }
+        if(user.getAbleFlag() == 0){
+            throw new CustomException("该用户不可用");
         }
         return new ResponseResult(CommonCode.USER_LOGIN_SUCCESS,user);
     }

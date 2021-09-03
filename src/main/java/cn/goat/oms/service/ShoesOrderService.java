@@ -2,6 +2,7 @@ package cn.goat.oms.service;
 
 import cn.goat.oms.entity.ShoesOrder;
 import cn.goat.oms.entity.dto.ShoesOrderDTO;
+import cn.goat.oms.entity.poi.ShoesOrderImp;
 import cn.goat.oms.entity.poi.ShoesOrderPoi;
 import cn.goat.oms.entity.request.ShoesOrderRequest;
 import cn.goat.oms.entity.response.ResponseResult;
@@ -33,4 +34,6 @@ public interface ShoesOrderService extends IService<ShoesOrder> {
     ResponseResult calculate(ShoesOrderRequest shoesOrderRequest, Page<ShoesOrder> request);
 
     ResponseResult<List<ShoesOrderPoi>> orderExport(ShoesOrderRequest shoesOrderRequest, Page<ShoesOrder> request);
+
+    ResponseResult orderImport(List<ShoesOrderImp> orders);
 }

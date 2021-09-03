@@ -5,8 +5,8 @@
 <mapper namespace="cn.goat.oms.mapper.ShoesOrderMapper">
 
     <resultMap id="BaseResultMap" type="cn.goat.oms.entity.ShoesOrder">
-            <id property="oderId" column="oder_id" jdbcType="BIGINT"/>
-            <result property="oderNumber" column="oder_number" jdbcType="BIGINT"/>
+            <id property="orderId" column="oder_id" jdbcType="BIGINT"/>
+            <result property="orderNumber" column="oder_number" jdbcType="VARCHAR"/>
             <result property="shoeCode" column="shoe_code" jdbcType="VARCHAR"/>
             <result property="shoeSize" column="shoe_size" jdbcType="VARCHAR"/>
             <result property="price" column="price" jdbcType="DECIMAL"/>

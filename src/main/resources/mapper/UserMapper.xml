@@ -13,13 +13,14 @@
             <result property="createdBy" column="created_by" jdbcType="VARCHAR"/>
             <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
             <result property="updatedBy" column="updated_by" jdbcType="VARCHAR"/>
+            <result property="ableFlag" column="able_flag" jdbcType="TINYINT"/>
             <result property="delFlag" column="del_flag" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         user_id,user_name,password,
         nick_name,phone,created_time,
-        created_by,updated_time,updated_by,
+        created_by,updated_time,updated_by,able_flag,
         del_flag
     </sql>
 </mapper>
