@@ -32,11 +32,11 @@ public class GoatOmsController {
     private ShoesOrderService shoesOrderService;
 
     @GetMapping("/findAll")
-    public ResponseResult<Page<ShoesOrder>> findAll(ShoesOrderRequest shoesOrderRequest, Page<ShoesOrder> request){
+    public ResponseResult<Page<ShoesOrder>> findAll(ShoesOrderRequest shoesOrderRequest){
         if(!Optional.ofNullable(shoesOrderRequest).isPresent()){
             shoesOrderRequest = new ShoesOrderRequest();
         }
-        IPage<ShoesOrder> all = shoesOrderService.findAll(shoesOrderRequest, request);
+        IPage<ShoesOrder> all = shoesOrderService.findAll(shoesOrderRequest);
         Page<ShoesOrder> shoesOrderPage = new Page<>(all.getCurrent(),all.getSize(),all.getTotal());
         shoesOrderPage.setRecords(all.getRecords());
         return ResponseResult.SUCCESS(shoesOrderPage);
@@ -80,20 +80,20 @@ public class GoatOmsController {
     }
 
     @GetMapping("/calculate")
-    public ResponseResult calculate(ShoesOrderRequest shoesOrderRequest, Page<ShoesOrder> request){
+    public ResponseResult calculate(ShoesOrderRequest shoesOrderRequest){
         if(!Optional.ofNullable(shoesOrderRequest).isPresent()){
             shoesOrderRequest = new ShoesOrderRequest();
         }
-        return shoesOrderService.calculate(shoesOrderRequest,request);
+        return shoesOrderService.calculate(shoesOrderRequest);
     }
 
     @PostMapping("/orderExport")
     @ResubmitAnnotation
-    public ResponseResult orderExport(ShoesOrderRequest shoesOrderRequest, Page<ShoesOrder> request,HttpServletResponse response){
+    public ResponseResult orderExport(ShoesOrderRequest shoesOrderRequest,HttpServletResponse response){
         if(!Optional.ofNullable(shoesOrderRequest).isPresent()){
             shoesOrderRequest = new ShoesOrderRequest();
         }
-        ResponseResult<List<ShoesOrderPoi>> shoesOrderPoiResponseResult = shoesOrderService.orderExport(shoesOrderRequest, request);
+        ResponseResult<List<ShoesOrderPoi>> shoesOrderPoiResponseResult = shoesOrderService.orderExport(shoesOrderRequest);
         ExportParams exportParams = new ExportParams(null, "sheet1", ExcelType.XSSF);
         Workbook sheets = ExcelExportUtil.exportExcel(exportParams, ShoesOrderPoi.class,shoesOrderPoiResponseResult.getData() );
         ExcelDownUtil.downLoadExcel("order.xls",response,sheets);

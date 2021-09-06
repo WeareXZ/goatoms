@@ -23,6 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import sun.awt.image.ShortInterleavedRaster;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class ShoesOrderServiceImpl extends ServiceImpl<ShoesOrderMapper, ShoesOr
     private ShoesOrderMapper shoesOrderMapper;
 
     @Override
-    public IPage<ShoesOrder> findAll(ShoesOrderRequest shoesOrderRequest, Page<ShoesOrder> request) {
+    public IPage<ShoesOrder> findAll(ShoesOrderRequest shoesOrderRequest) {
         QueryWrapper queryWrapper = new QueryWrapper();
         if (StringUtils.isNotBlank(shoesOrderRequest.getShoeCode())) {
             queryWrapper.like("shoe_code", shoesOrderRequest.getShoeCode());
@@ -65,6 +66,7 @@ public class ShoesOrderServiceImpl extends ServiceImpl<ShoesOrderMapper, ShoesOr
         if (StringUtils.isNotBlank(shoesOrderRequest.getEndTime())) {
             queryWrapper.le("created_time", shoesOrderRequest.getEndTime());
         }
+        Page request = new Page(shoesOrderRequest.getPage(),shoesOrderRequest.getSize());
         IPage<ShoesOrder> page = shoesOrderMapper.selectPage(request, queryWrapper);
         return page;
     }
@@ -150,8 +152,8 @@ public class ShoesOrderServiceImpl extends ServiceImpl<ShoesOrderMapper, ShoesOr
     }
 
     @Override
-    public ResponseResult calculate(ShoesOrderRequest shoesOrderRequest, Page<ShoesOrder> request) {
-        IPage<ShoesOrder> all = this.findAll(shoesOrderRequest, request);
+    public ResponseResult calculate(ShoesOrderRequest shoesOrderRequest) {
+        IPage<ShoesOrder> all = this.findAll(shoesOrderRequest);
         List<ShoesOrder> records = all.getRecords();
         long longValue = BigDecimal.ZERO.longValue();
         Long total = 0L;
@@ -165,8 +167,8 @@ public class ShoesOrderServiceImpl extends ServiceImpl<ShoesOrderMapper, ShoesOr
     }
 
     @Override
-    public ResponseResult<List<ShoesOrderPoi>> orderExport(ShoesOrderRequest shoesOrderRequest, Page<ShoesOrder> request) {
-        IPage<ShoesOrder> all = this.findAll(shoesOrderRequest, request);
+    public ResponseResult<List<ShoesOrderPoi>> orderExport(ShoesOrderRequest shoesOrderRequest) {
+        IPage<ShoesOrder> all = this.findAll(shoesOrderRequest);
         List<ShoesOrder> records = all.getRecords();
         List<ShoesOrderPoi> shoesOrderPois = new ArrayList<>();
         records.stream().forEach(shoesOrder -> {
