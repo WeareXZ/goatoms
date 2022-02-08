@@ -114,6 +114,16 @@
             <artifactId>easypoi-annotation</artifactId>
             <version>4.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.9.0</version>
+        </dependency>
     </dependencies>
 
     <build>

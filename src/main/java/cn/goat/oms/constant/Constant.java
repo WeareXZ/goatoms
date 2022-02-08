@@ -1,4 +1,4 @@
-package cn.goat.oms.config;
+package cn.goat.oms.constant;
 
 public class Constant {
 

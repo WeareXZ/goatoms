@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://107.182.190.127:3306/goatoms?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
-    username: root
-    password: root
+    username: user_he
+    password: Hyz970817
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       #初始化大小

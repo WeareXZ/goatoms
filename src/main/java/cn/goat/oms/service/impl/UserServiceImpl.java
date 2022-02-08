@@ -1,6 +1,6 @@
 package cn.goat.oms.service.impl;
 
-import cn.goat.oms.config.Constant;
+import cn.goat.oms.constant.Constant;
 import cn.goat.oms.entity.dto.UserDTO;
 import cn.goat.oms.entity.response.CommonCode;
 import cn.goat.oms.entity.response.CustomException;
@@ -15,7 +15,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 
